@@ -7,7 +7,10 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "inngest:dev": "inngest-cli dev -u http://localhost:3000/api/inngest",
+    "dev:all": "mprocs",
+    "dev:win": "start \"Next.js\" cmd /c \"npm run dev\" && start \"Inngest\" cmd /c \"npx inngest-cli dev -u http://localhost:3000/api/inngest\""
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -56,6 +59,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "inngest": "^3.46.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.554.0",
     "next": "15.5.4",
@@ -80,6 +84,8 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.1",
+    "inngest-cli": "^1.14.0",
     "prisma": "^7.0.0",
     "tailwindcss": "^4",
     "tsx": "^4.20.6",

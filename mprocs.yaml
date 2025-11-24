@@ -1,0 +1,6 @@
+procs:
+  inngest:
+    cmd: ["npx", "inngest-cli", "dev", "--no-discovery", "-u", "http://localhost:3000/api/inngest"]
+
+  next: 
+    cmd: ["npm", "run", "dev"]
