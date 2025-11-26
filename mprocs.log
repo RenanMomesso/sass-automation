@@ -25,3 +25,12 @@ ERROR [portable_pty::win::psuedocon] CreateProcessW `"\"C:\\Program Files\\nodej
 ERROR [portable_pty::win::psuedocon] CreateProcessW `"\"C:\\Program Files\\nodejs\\npm\" run dev\0"` in cwd `Some("C:\\Users\\Renanmomesso\\Desktop\\nodebase\0")` failed: %1 não é um aplicativo Win32 válido. (os error 193)
 WARN [mprocs::app] Ignore input event: FocusGained
 WARN [mprocs::app] Ignore input event: FocusLost
+ERROR [portable_pty::win::psuedocon] CreateProcessW `"\"C:\\Program Files\\nodejs\\npx\" inngest-cli dev --no-discovery -u http://localhost:3000/api/inngest\0"` in cwd `Some("C:\\Users\\Renanmomesso\\Desktop\\nodebase\0")` failed: %1 não é um aplicativo Win32 válido. (os error 193)
+ERROR [portable_pty::win::psuedocon] CreateProcessW `"\"C:\\Program Files\\nodejs\\npm\" run dev\0"` in cwd `Some("C:\\Users\\Renanmomesso\\Desktop\\nodebase\0")` failed: %1 não é um aplicativo Win32 válido. (os error 193)
+WARN [mprocs::app] Ignore input event: FocusLost
+WARN [mprocs::app] Ignore input event: FocusGained
+WARN [mprocs::app] Ignore input event: FocusLost
+WARN [mprocs::app] Ignore input event: FocusGained
+WARN [mprocs::app] Ignore input event: FocusLost
+WARN [mprocs::app] Ignore input event: FocusGained
+WARN [mprocs::app] Ignore input event: FocusLost

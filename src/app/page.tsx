@@ -16,7 +16,8 @@ export default function Home() {
       queryClient.invalidateQueries(trcp.getWorkflows.queryOptions());
     }
   }))
-  console.log("🚀 ~ Home ~ users:", users);
+
+  const testAiMutation = useMutation(trcp.testAi.mutationOptions());
   const createWorkflow = () => {
     createWorkFlow.mutate();
   };
@@ -30,6 +31,11 @@ export default function Home() {
       <div>
         <Button onClick={createWorkflow}>Create Workflow</Button>
         <span> Workflows: {JSON.stringify(workflows)}</span>
+      </div>
+
+      <div>
+        <Button onClick={() => testAiMutation.mutate()}>Test AI</Button>
+        <div>AI Response: {testAiMutation.data?.message}</div>
       </div>
     </div>
   );

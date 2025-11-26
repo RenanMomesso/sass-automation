@@ -1,7 +1,18 @@
 import { inngest } from "@/inngest/client";
 import { baseProcedure, createTRPCRouter, protectedProcedure } from "../init";
 import prisma from "@/lib/db";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
 export const appRouter = createTRPCRouter({
+  testAi: protectedProcedure.mutation(async () => {
+    await inngest.send({
+      name: "execute/ai",
+    })
+    return {
+      success: true,
+      message: "AI test triggered",
+    }
+  }),
   getUsers: baseProcedure.query(async ({ ctx }) => {
     console.log("Context in getUsers:", ctx);
     return prisma.user.findMany({
@@ -17,13 +28,13 @@ export const appRouter = createTRPCRouter({
     await inngest.send({
       name: "test/hello.world",
       data: {
-        email: "testing@gmail.com"
-      }
-    })
+        email: "testing@gmail.com",
+      },
+    });
     return {
       success: true,
       message: "Workflow creation triggered",
-    }
+    };
   }),
 });
 // export type definition of API

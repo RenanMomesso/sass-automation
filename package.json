@@ -13,6 +13,7 @@
     "dev:win": "start \"Next.js\" cmd /c \"npm run dev\" && start \"Inngest\" cmd /c \"npx inngest-cli dev -u http://localhost:3000/api/inngest\""
   },
   "dependencies": {
+    "@ai-sdk/google": "^2.0.43",
     "@auth/prisma-adapter": "^2.11.1",
     "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.0.2",
@@ -51,6 +52,7 @@
     "@trpc/tanstack-react-query": "^11.7.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.15.6",
+    "ai": "^5.0.101",
     "bcryptjs": "^3.0.3",
     "better-auth": "^1.4.0",
     "class-variance-authority": "^0.7.1",
