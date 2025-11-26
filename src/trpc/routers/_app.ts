@@ -1,20 +1,34 @@
 import { inngest } from "@/inngest/client";
 import { baseProcedure, createTRPCRouter, protectedProcedure } from "../init";
 import prisma from "@/lib/db";
-import { google } from "@ai-sdk/google";
-import { generateText } from "ai";
+import * as Sentry from "@sentry/nextjs";
+
 export const appRouter = createTRPCRouter({
   testAi: protectedProcedure.mutation(async () => {
-    await inngest.send({
-      name: "execute/ai",
-    })
-    return {
-      success: true,
-      message: "AI test triggered",
+    try {
+      Sentry.logger.info("Starting AI test event");
+      console.log("Starting AI test event");
+      
+      await inngest.send({
+        name: "execute/ai",
+      });
+      
+      // Simulate an error for Sentry testing
+      // throw new Error("Test error for Sentry monitoring - AI operation failed");
+      return {
+        success: true,
+        message: "AI test event sent successfully",
+      }
+    } catch (error) {
+      // Capture error in Sentry
+      Sentry.captureException(error);
+      console.error("Error in testAi:", error);
+      
+      // Re-throw the error so tRPC handles it properly
+      throw error;
     }
   }),
   getUsers: baseProcedure.query(async ({ ctx }) => {
-    console.log("Context in getUsers:", ctx);
     return prisma.user.findMany({
       where: {
         id: ctx.auth?.user.id,
