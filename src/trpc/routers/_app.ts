@@ -1,10 +1,10 @@
 import { inngest } from "@/inngest/client";
-import { baseProcedure, createTRPCRouter, protectedProcedure } from "../init";
+import { baseProcedure, createTRPCRouter, premiumProcedure, protectedProcedure } from "../init";
 import prisma from "@/lib/db";
 import * as Sentry from "@sentry/nextjs";
 
 export const appRouter = createTRPCRouter({
-  testAi: protectedProcedure.mutation(async () => {
+  testAi: premiumProcedure.mutation(async () => {
     try {
       Sentry.logger.info("Starting AI test event");
       console.log("Starting AI test event");
