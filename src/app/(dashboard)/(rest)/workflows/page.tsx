@@ -1,19 +1,20 @@
-export default function WorkflowsPage() {
+import { WorkflowsList } from "@/features/workflows/components/workflows";
+import { prefetchWorkflows } from "@/features/workflows/server/prefetch";
+import { requireAuth } from "@/lib/auth-libs";
+import { HydrateClient } from "@/trpc/server";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+
+export default async function WorkflowsPage() {
+  await requireAuth();
+  prefetchWorkflows({});
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Workflows</h1>
-          <p className="text-muted-foreground">
-            Manage and create your automation workflows
-          </p>
-        </div>
-        <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-          Create Workflow
-        </button>
-      </div>
-      
-      
-    </div>
+    <HydrateClient>
+      <ErrorBoundary fallback={<div>Something went wrong.</div>}>
+        <Suspense fallback={<div>Loading workflows...</div>}>
+          <WorkflowsList />
+        </Suspense>
+      </ErrorBoundary>
+    </HydrateClient>
   );
 }
