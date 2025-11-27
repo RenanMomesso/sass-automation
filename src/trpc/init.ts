@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { polarClient } from "@/lib/polar";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { headers } from "next/headers";
 import { cache } from "react";
@@ -10,9 +11,9 @@ export const createTRPCContext = cache(async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  
-  return { 
-    auth: session
+
+  return {
+    auth: session,
   };
 });
 
@@ -43,11 +44,30 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
       message: "You must be logged in to access this resource",
     });
   }
-  
-  return next({ 
-    ctx: { 
-      ...ctx, 
-      auth: ctx.auth
-    } 
+
+  return next({
+    ctx: {
+      ...ctx,
+      auth: ctx.auth,
+    },
   });
 });
+
+export const premiumProcedure = protectedProcedure.use(
+  async ({ ctx, next }) => {
+    const customer = await polarClient.customers.getStateExternal({
+      externalId: ctx.auth.user.id,
+    });
+
+    if (
+      !customer.activeSubscriptions ||
+      customer.activeSubscriptions.length === 0
+    ) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You must have an active subscription to access this resource",
+      });
+    }
+    return next({ ctx: { ...ctx, customer } });
+  }
+);
