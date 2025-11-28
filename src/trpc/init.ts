@@ -55,19 +55,23 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
 
 export const premiumProcedure = protectedProcedure.use(
   async ({ ctx, next }) => {
-    const customer = await polarClient.customers.getStateExternal({
-      externalId: ctx.auth.user.id,
-    });
+    // Temporarily disabled until POLAR_ACCESS_TOKEN is configured
+    // const customer = await polarClient.customers.getStateExternal({
+    //   externalId: ctx.auth.user.id,
+    // });
 
-    if (
-      !customer.activeSubscriptions ||
-      customer.activeSubscriptions.length === 0
-    ) {
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: "You must have an active subscription to access this resource",
-      });
-    }
-    return next({ ctx: { ...ctx, customer } });
+    // if (
+    //   !customer.activeSubscriptions ||
+    //   customer.activeSubscriptions.length === 0
+    // ) {
+    //   throw new TRPCError({
+    //     code: "FORBIDDEN",
+    //     message: "You must have an active subscription to access this resource",
+    //   });
+    // }
+    // return next({ ctx: { ...ctx, customer } });
+    
+    // For now, just pass through without subscription check
+    return next({ ctx });
   }
 );

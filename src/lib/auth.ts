@@ -12,23 +12,24 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+  // Temporarily disabled until POLAR_ACCESS_TOKEN is properly configured
   plugins: [
-    polar({
-      client: polarClient,
-      createCustomerOnSignUp: true,
-      use: [
-        checkout({
-          products: [
-            {
-              productId: "prod_NB_001",
-              slug: "pro",
-            },
-          ],
-          successUrl: process.env.POLAR_SUCCESS_URL || "http://localhost:3000",
-          authenticatedUsersOnly: true,
-        }),
-        portal(),
-      ],
-    }),
+    // polar({
+    //   client: polarClient,
+    //   createCustomerOnSignUp: true,
+    //   use: [
+    //     checkout({
+    //       products: [
+    //         {
+    //           productId: "prod_NB_001",
+    //           slug: "pro",
+    //         },
+    //       ],
+    //       successUrl: process.env.POLAR_SUCCESS_URL || "http://localhost:3000",
+    //       authenticatedUsersOnly: true,
+    //     }),
+    //     portal(),
+    //   ],
+    // }),
   ],
 });
