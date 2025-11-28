@@ -95,7 +95,10 @@ export function AppSidebar() {
         {!isLoading && !hasActiveSubscription && (
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={() => authClient.checkout({ slug: "pro" })}
+              onClick={() => {
+                // Temporarily disabled until POLAR_ACCESS_TOKEN is configured
+                console.log("Upgrade to Pro - Polar integration disabled");
+              }}
               asChild
               className={`w-full justify-start p-3 rounded-lg transition-colors`}
             >
@@ -108,7 +111,10 @@ export function AppSidebar() {
         )}
         <SidebarMenuItem>
           <SidebarMenuButton
-            onClick={() => authClient.customer.portal()}
+            onClick={() => {
+              // Temporarily disabled until POLAR_ACCESS_TOKEN is configured
+              console.log("Billing Portal - Polar integration disabled");
+            }}
             asChild
             className={`w-full justify-start p-3 rounded-lg transition-colors`}
           >
