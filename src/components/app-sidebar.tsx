@@ -11,7 +11,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useHasActiveSubscription } from "@/features/subscription/hooks/use-subscription";
-import { authClient } from "@/lib/auth-client";
 import {
   FolderOpen,
   Key,
@@ -27,36 +26,23 @@ const menuItems = [
   {
     title: "Workflows",
     icon: FolderOpen,
-    href: "/dashboard/workflows",
+    href: "/workflows",
   },
   {
     title: "Credentials",
     icon: Key,
-    href: "/dashboard/credentials",
+    href: "/credentials",
   },
   {
     title: "Executions",
     icon: Activity,
-    href: "/dashboard/executions",
-  },
-];
-
-const bottomMenuItems = [
-{
-    title: "Sign Out",
-    icon: LogOut,
-    href: "/logout",
-    className: "text-red-600 hover:text-red-700 hover:bg-red-50",
+    href: "/executions",
   },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
   const { hasActiveSubscription, isLoading } = useHasActiveSubscription();
-  console.log(
-    "🚀 ~ AppSidebar ~ hasActiveSubscription:",
-    hasActiveSubscription
-  );
 
   return (
     <Sidebar className="border-r border-border/50">
@@ -92,54 +78,63 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-border/50">
-        {!isLoading && !hasActiveSubscription && (
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={() => {
-                // Temporarily disabled until POLAR_ACCESS_TOKEN is configured
-                console.log("Upgrade to Pro - Polar integration disabled");
-              }}
-              asChild
-              className={`w-full justify-start p-3 rounded-lg transition-colors`}
-            >
-              <Link href="" className="flex items-center gap-3">
-                <Crown className="h-4 w-4 text-yellow-600" />
-                <span className="font-medium">Upgrade to Pro</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        )}
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            onClick={() => {
-              // Temporarily disabled until POLAR_ACCESS_TOKEN is configured
-              console.log("Billing Portal - Polar integration disabled");
-            }}
-            asChild
-            className={`w-full justify-start p-3 rounded-lg transition-colors`}
-          >
-            <Link href="" className="flex items-center gap-3">
-              <Crown className="h-4 w-4 text-yellow-600" />
-              <span className="font-medium">Billing Portal</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
         <SidebarMenu className="space-y-1">
-          {bottomMenuItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
+          {!isLoading && !hasActiveSubscription && (
+            <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                className={`w-full justify-start p-3 rounded-lg transition-colors ${
-                  item.className || "hover:bg-muted/50"
-                }`}
+                className="w-full justify-start p-3 rounded-lg transition-colors hover:bg-muted/50"
               >
-                <Link href={item.href} className="flex items-center gap-3">
-                  <item.icon className="h-4 w-4" />
-                  <span className="font-medium">{item.title}</span>
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Temporarily disabled until POLAR_ACCESS_TOKEN is configured
+                    console.log("Upgrade to Pro - Polar integration disabled");
+                  }}
+                  className="flex items-center gap-3"
+                >
+                  <Crown className="h-4 w-4 text-yellow-600" />
+                  <span className="font-medium">Upgrade to Pro</span>
+                </button>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          ))}
+          )}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="w-full justify-start p-3 rounded-lg transition-colors hover:bg-muted/50"
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  // Temporarily disabled until POLAR_ACCESS_TOKEN is configured
+                  console.log("Billing Portal - Polar integration disabled");
+                }}
+                className="flex items-center gap-3"
+              >
+                <CreditCard className="h-4 w-4 text-muted-foreground" />
+                <span className="font-medium">Billing</span>
+              </button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="w-full justify-start p-3 rounded-lg transition-colors text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  // Handle sign out
+                  console.log("Sign out");
+                }}
+                className="flex items-center gap-3"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="font-medium">Sign Out</span>
+              </button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
 

@@ -27,7 +27,7 @@ export const workflowsRouter = createTRPCRouter({
   updateName: protectedProcedure
     .input(z.object({ id: z.string(), name: z.string().min(1).max(255) }))
     .mutation(({ input, ctx }) => {
-      return prisma.workflow.updateMany({
+      return prisma.workflow.update({
         where: {
           id: input.id,
           userId: ctx.auth.user.id,
@@ -39,13 +39,17 @@ export const workflowsRouter = createTRPCRouter({
     }),
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .query(({ input, ctx }) => {
-      return prisma.workflow.findFirst({
+    .query(async ({ input, ctx }) => {
+      const workflow = await prisma.workflow.findUnique({
         where: {
           id: input.id,
           userId: ctx.auth.user.id,
         },
       });
+      if (!workflow) {
+        throw new Error("Workflow not found");
+      }
+      return workflow;
     }),
   getMany: protectedProcedure
     .input(
@@ -90,7 +94,7 @@ export const workflowsRouter = createTRPCRouter({
 
       return {
         items,
-        page, 
+        page,
         totalCount,
         totalPages,
         hasNextPage,
