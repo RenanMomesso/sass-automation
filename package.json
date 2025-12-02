@@ -55,6 +55,7 @@
     "@trpc/tanstack-react-query": "^11.7.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.15.6",
+    "@xyflow/react": "^12.9.3",
     "ai": "^5.0.101",
     "bcryptjs": "^3.0.3",
     "better-auth": "^1.4.0",
