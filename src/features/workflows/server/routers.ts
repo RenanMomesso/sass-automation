@@ -1,10 +1,10 @@
 import { generateSlug } from "random-word-slugs";
 import prisma from "@/lib/db";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
-import z, { promise } from "zod";
+import z from "zod";
 import { PAGINATION } from "@/config/constants/pagination";
 import { NodeType } from "@/generated/prisma/enums";
-import { Edge, Node } from "@xyflow/react";
+import type { Edge, Node } from "@xyflow/react";
 
 export const workflowsRouter = createTRPCRouter({
   create: protectedProcedure.mutation(({ ctx }) => {
@@ -13,10 +13,21 @@ export const workflowsRouter = createTRPCRouter({
         name: generateSlug(3),
         userId: ctx.auth.user.id,
         nodes: {
-          create: {
-            type: NodeType.INITIAL,
-            position: { x: 0, y: 0 },
-            name: NodeType.INITIAL,
+          createMany: {
+            data: [
+              {
+                type: NodeType.INITIAL,
+                position: { x: 250, y: 0 },
+                data: {},
+                name: NodeType.INITIAL,
+              },
+              {
+                type: NodeType.INITIAL,
+                position: { x: 250, y: 200 },
+                data: {},
+                name: NodeType.INITIAL,
+              },
+            ],
           },
         },
       },
@@ -58,13 +69,16 @@ export const workflowsRouter = createTRPCRouter({
           connections: true,
         },
       });
-      const nodes: Node[] = await workflow.nodes.map((node) => ({
+
+      console.log("Workflow loaded:", workflow);
+      const nodes: Node[] = workflow.nodes.map((node) => ({
         id: node.id,
         type: node.type,
         position: node.position as { x: number; y: number },
         data: (node.data as Record<string, unknown>) || {},
       }));
 
+      console.log("Nodes loaded:", nodes);
       const edges: Edge[] = workflow.connections.map((connection) => ({
         id: connection.id,
         source: connection.fromNodeId,
@@ -73,6 +87,7 @@ export const workflowsRouter = createTRPCRouter({
         targetHandle: connection.toInput,
       }));
 
+      console.log("Edges loaded:", edges);
       return {
         id: workflow.id,
         name: workflow.name,
