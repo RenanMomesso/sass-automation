@@ -1,8 +1,14 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps, HTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
+import { NodeStatus } from "./node-status-indicator";
+import { CheckCircleIcon, Loader2Icon, XCircleIcon } from "lucide-react";
 
-export function BaseNode({ className, ...props }: ComponentProps<"div">) {
+interface BaseNodeProps extends HTMLAttributes<HTMLDivElement> {
+  status?: NodeStatus;
+}
+
+export function BaseNode({ className, status, ...props }: BaseNodeProps) {
   return (
     <div
       className={cn(
@@ -15,10 +21,21 @@ export function BaseNode({ className, ...props }: ComponentProps<"div">) {
         // is selected, using Tailwind's `&` selector.
         "[.react-flow\\_\\_node.selected_&]:border-muted-foreground",
         "[.react-flow\\_\\_node.selected_&]:shadow-lg",
-        className,
+        className
       )}
       {...props}
-    />
+    >
+      {props.children}
+      {status === "error" && (
+        <XCircleIcon className="absolute right-1 bottom-0.5 size-2 text-red-500" />
+      )}
+      {status === "loading" && (
+        <Loader2Icon className="absolute right-1 bottom-0.5 size-2 text-blue-700 stroke-3 animate-spin" />
+      )}
+      {status === "success" && (
+        <CheckCircleIcon className="absolute right-1 bottom-0.5 size-2 text-emerald-600" />
+      )}
+    </div>
   );
 }
 
@@ -37,7 +54,7 @@ export function BaseNodeHeader({
         "mx-0 my-0 -mb-1 flex flex-row items-center justify-between gap-2 px-3 py-2",
         // Remove or modify these classes if you modify the padding in the
         // `<BaseNode />` component.
-        className,
+        className
       )}
     />
   );
@@ -79,7 +96,7 @@ export function BaseNodeFooter({ className, ...props }: ComponentProps<"div">) {
       data-slot="base-node-footer"
       className={cn(
         "flex flex-col items-center gap-y-2 border-t px-3 pt-2 pb-3",
-        className,
+        className
       )}
       {...props}
     />
