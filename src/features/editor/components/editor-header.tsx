@@ -28,9 +28,37 @@ import {
 } from "lucide-react";
 import {
   useSuspenseWorkflow,
+  useUpdateWorkflow,
   useUpdateWorkflowName,
 } from "@/features/workflows/hooks/use-workflows";
 import { useEffect, useRef, useState } from "react";
+import { useAtomValue } from "jotai";
+import { editorAtom } from "../store/atoms";
+
+export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
+  const editor = useAtomValue(editorAtom);
+  const saveWorkflow = useUpdateWorkflow();
+
+  const handleSave = () => {
+    if (!editor) {
+      return;
+    }
+
+    const nodes = editor.getNodes();
+    const edges = editor.getEdges();
+
+    saveWorkflow.mutate({ id: workflowId, nodes, edges });
+  };
+
+  return (
+    <div className="ml-auto">
+      <Button size="sm" onClick={handleSave} disabled={saveWorkflow.isPending}>
+        <SaveIcon className="h-4 w-4 mr-2" />
+        Save
+      </Button>
+    </div>
+  );
+};
 
 interface EditorHeaderProps {
   workflowId: string;
@@ -114,7 +142,6 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
 };
 export const EditorHeader = ({
   workflowId,
-  onSave,
   onRun,
   onShare,
   isSaving = false,
@@ -155,15 +182,7 @@ export const EditorHeader = ({
       {/* Action Buttons */}
       <div className="flex items-center gap-2">
         {/* Save Button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onSave}
-          disabled={isSaving || !hasUnsavedChanges}
-        >
-          <SaveIcon className="h-4 w-4 mr-2" />
-          {isSaving ? "Saving..." : "Save"}
-        </Button>
+        <EditorSaveButton workflowId={workflowId} />
 
         {/* Run Button */}
         <Button size="sm" onClick={onRun} disabled={isRunning}>
