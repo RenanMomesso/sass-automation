@@ -10,7 +10,6 @@ type HttpRequestNodeData = {
   endpoint?: string;
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   body?: string;
-  [key: string]: unknown;
 };
 
 type HttpRequestNodeType = Node<HttpRequestNodeData>;
@@ -28,7 +27,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const description = nodeData?.endpoint
     ? `${nodeData.method || "GET"} ${nodeData.endpoint}`
     : "No endpoint configured";
-  const status = props.data?.status as NodeStatus;
+  const status = "initial" as NodeStatus;
 
   const handleSubmit = (values: HttpRequestFormValues) => {
     setNodes((nodes) =>
@@ -38,9 +37,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
             ...node,
             data: {
               ...node.data,
-              endpoint: values.endpoint,
-              method: values.method,
-              body: values.body,
+              ...values,
             },
           };
         }
@@ -54,10 +51,12 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
       <DialogExecution
         isOpen={openDialog}
         onClose={handleCloseSettings}
-        defaultBody={nodeData?.body || ""}
-        defaultEndpoint={nodeData?.endpoint || ""}
-        defaultMethod={nodeData?.method || "GET"}
         onSubmit={handleSubmit}
+        defaultValues={{
+          endpoint: nodeData?.endpoint || "",
+          method: nodeData?.method || "GET",
+          body: nodeData?.body || "",
+        }}
       />
       <BaseExecutionNode
         {...props}
@@ -66,7 +65,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
         description={description}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
-        status={"loading"}
+        status={status}
       />
     </>
   );
