@@ -89,6 +89,12 @@ export const workflowsRouter = createTRPCRouter({
       });
 
       return await prisma.$transaction(async (tx) => {
+        // Delete connections first to avoid foreign key constraint violations
+        await tx.connection.deleteMany({
+          where: { workflowId: id },
+        });
+
+        // Then delete nodes
         await tx.node.deleteMany({
           where: { workflowId: id },
         });
