@@ -42,37 +42,29 @@ interface DialogExecutionProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
-  defaultEndpoint?: string;
-  defaultMethod?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-  defaultBody?: string;
+  defaultValues?: Partial<HttpRequestFormValues>;
 }
 
 export const DialogExecution = ({
   isOpen,
   onClose,
   onSubmit,
-  defaultBody,
-  defaultEndpoint,
-  defaultMethod,
+  defaultValues = {},
 }: DialogExecutionProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: {
-      endpoint: defaultEndpoint || "",
-      method: defaultMethod || "GET",
-      body: defaultBody || "",
-    },
+    defaultValues,
     resolver: zodResolver(formSchema),
   });
 
   useEffect(() => {
     if (isOpen) {
       form.reset({
-        endpoint: defaultEndpoint || "",
-        method: defaultMethod || "GET",
-        body: defaultBody || "",
+        endpoint: defaultValues.endpoint || "",
+        method: defaultValues.method || "GET",
+        body: defaultValues.body || "",
       });
     }
-  }, [isOpen, defaultBody, defaultEndpoint, defaultMethod, form]);
+  }, [isOpen, defaultValues, form]);
 
   const watchMethod = form.watch("method");
   const showBodyField = ["POST", "PUT", "PATCH"].includes(watchMethod);

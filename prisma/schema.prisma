@@ -127,7 +127,7 @@ model Connection {
   fromNodeId String
   fromNode   Node   @relation("FromNode", fields: [fromNodeId], references: [id], onDelete: Cascade)
   toNodeId   String
-  toNode     Node   @relation("ToNode", fields: [toNodeId], references: [id])
+  toNode     Node   @relation("ToNode", fields: [toNodeId], references: [id], onDelete: Cascade)
 
   fromOutput String @default("main")
   toInput    String @default("main")
