@@ -20,8 +20,8 @@ export const executeWorkflow = inngest.createFunction(
         where: { id: workflowId },
         include: { nodes: true, connections: true },
       });
-
       return topologicalSort(workflow.nodes, workflow.connections);
+      // return topologicalSort(workflow.nodes, workflow.connections);
     });
 
     let context = event.data.initialData || {};

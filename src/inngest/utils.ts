@@ -18,9 +18,10 @@ export const topologicalSort = (
   
   // Convert connections to edges format expected by toposort library
   // Each edge represents a dependency: [fromNode, toNode]
+  // REVERSE the direction to fix the workflow semantics
   const edges: [string, string][] = connections.map((conn) => [
-    conn.fromNodeId,
     conn.toNodeId,
+    conn.fromNodeId,
   ]);
   
   // Track which nodes are connected to others (have dependencies)
@@ -56,7 +57,6 @@ export const topologicalSort = (
   
   // Create a lookup map for quick node retrieval by ID
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
-  
   // Return nodes in the sorted order, safely handling missing nodes
   return sortedNodeIds
     .map((id) => nodeMap.get(id))
